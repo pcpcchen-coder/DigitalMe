@@ -1,0 +1,36 @@
+# Secrets & personalized data: never push to PUBLIC repo
+.env
+.env.*
+!.env.example
+private_data/
+personal_data/
+recordings/
+voice_samples/
+speaker_embeddings/
+family_archive/
+*.pem
+*.key
+*secrets*
+*.p12
+*.pfx
+.DS_Store
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+node_modules/
+dist/
+build/
+.next/
+.cache/
+*.log
+# Generated voice/avatar assets should be local; synthetic tests stored separately
+outputs/
+generated_audio/
+generated_video/
+models/
+checkpoints/
+*.safetensors
+*.ckpt
+*.pth
+*.pt
