@@ -1,0 +1,6 @@
+{
+  "scope": "git index; heuristic patterns; synthetic evidence reviewed separately",
+  "tracked_files": 54,
+  "findings": [],
+  "passed": true
+}
