@@ -5,6 +5,28 @@ import {
 import path from "node:path";
 const evidence = path.resolve("../../evidence");
 
+async function observePlaybackMotion(page: any) {
+  await page.evaluate(() => {
+    const state = { max: 0, frames: 0, lastTime: 0 };
+    (window as any).__playbackMotion = state;
+    const sample = () => {
+      if ((window as any).__playbackMotion !== state) return;
+      const audio = document.querySelector("audio");
+      const model = document.querySelector(".face-viewer");
+      if (audio && !audio.paused && audio.currentTime > 0.01) {
+        state.max = Math.max(
+          state.max,
+          parseFloat(model?.getAttribute("data-applied-jaw") || "0"),
+        );
+        state.frames++;
+        state.lastTime = audio.currentTime;
+      }
+      requestAnimationFrame(sample);
+    };
+    requestAnimationFrame(sample);
+  });
+}
+
 test("stereo demo reconstructs embedded GLB, deforms, speaks, and applies to conversation", async ({
   page,
 }) => {
@@ -35,20 +57,25 @@ test("stereo demo reconstructs embedded GLB, deforms, speaks, and applies to con
     path: path.join(evidence, "face-builder.png"),
     fullPage: true,
   });
+  await slider.press("Home");
+  await expect
+    .poll(() => page.locator(".face-viewer").getAttribute("data-applied-jaw"))
+    .toBe("0.000");
   await page
     .getByLabel("模型試音文字")
     .fill(
       "合成測試音訊：這是一段供模型嘴型測試使用的比較長的文字，確保播放器有足夠時間提供可觀測的說話動畫。",
     );
+  await observePlaybackMotion(page);
   await page.getByRole("button", { name: "語音與模型連動測試" }).click();
   await expect
-    .poll(async () =>
-      parseFloat(
-        (await page.locator(".face-viewer").getAttribute("data-applied-jaw")) ||
-          "0",
-      ),
-    )
+    .poll(() => page.evaluate(() => (window as any).__playbackMotion.max), {
+      timeout: 10000,
+    })
     .toBeGreaterThan(0.1);
+  const previewMotion = await page.evaluate(
+    () => (window as any).__playbackMotion,
+  );
   await page.getByRole("button", { name: "中斷模型試音" }).click();
   await expect
     .poll(() => page.locator(".face-viewer").getAttribute("data-applied-jaw"))
@@ -58,16 +85,21 @@ test("stereo demo reconstructs embedded GLB, deforms, speaks, and applies to con
     "data-ready",
     "true",
   );
+  await observePlaybackMotion(page);
   await page.getByRole("button", { name: "開始對話" }).click();
   await expect(page.locator(".conversation article")).toHaveCount(1);
   await expect
-    .poll(async () =>
-      parseFloat(
-        (await page.locator(".face-viewer").getAttribute("data-applied-jaw")) ||
-          "0",
-      ),
-    )
+    .poll(() => page.evaluate(() => (window as any).__playbackMotion.max), {
+      timeout: 10000,
+    })
     .toBeGreaterThan(0.1);
+  console.log(
+    "SYNTHETIC_PLAYBACK_MOTION",
+    JSON.stringify({
+      preview: previewMotion,
+      conversation: await page.evaluate(() => (window as any).__playbackMotion),
+    }),
+  );
   await page.screenshot({
     path: path.join(evidence, "face-speaking.png"),
     fullPage: true,
