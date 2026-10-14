@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-10-14T01:36:19.688705+00:00",
-  "source_commit": "7d136e707beae9caa05c45d2f76658e1ef199d4b",
+  "generated_at": "2026-10-14T01:44:12.765885+00:00",
+  "source_commit": "ab09aba355e2f997fb327ee62c3c54599b62748c",
   "environment": {
     "os": "Linux",
     "arch": "x86_64",
@@ -15,7 +15,7 @@
     "tts_total": 10,
     "dialogue_passed": 20,
     "dialogue_total": 20,
-    "mock_p50_ms": 22.0105,
+    "mock_p50_ms": 21.7545,
     "privacy_scan": true,
     "npm_vulnerabilities": 0,
     "python_vulnerabilities": 0,
@@ -154,21 +154,21 @@
     ]
   ],
   "sha256": {
-    "smoke.json": "f8c0d4e37f48ca4c6980e2572f438b12c1e3b2f615ad64a93c97bdfe82314e79",
-    "face-smoke.json": "7e7a19a954846229fc965ca9b3ffbc42a2aa477d83d5bbebe38212ae4161d619",
-    "python-tests.xml": "f7f5c94d3de9b03c4f284e3015ca314b1c4dbb8b9872a17c2a1ca90d3965b98f",
-    "browser-tests.json": "a297d4d111a52c35cc2b451ebe5de05b7daf56dc7027a5dc37d956bdba5e71c0",
+    "smoke.json": "8532120be1250cf49f5e616f8241b5866e1c64a87e14cc627c2a8c3f243b2f05",
+    "face-smoke.json": "f8c77faed03dfa3e5589f30c0be9f813c3fe042dfebc4a568473dda00856583c",
+    "python-tests.xml": "8e95180372d11c0760e291f767d2ffb3433b4baf6ceeb17e22907516b1c321f3",
+    "browser-tests.json": "70271860d16dee3835b00204ff1103085ba94135c48de8094e73e3c7a4919e9c",
     "privacy-scan.json": "85f31825c6f2b278bf3e840e5730ee084e9a4221a80ee699a96007abbd6c3abe",
     "npm-audit.json": "5adade60a1fa0913e088c2a5eebad00bc33d8179d806f9fe9cae401787767e9b",
     "python-audit.json": "9f871a5efc045d685bf966cbca5971495535b454bb3a15f41749803d12555f3a",
     "regressions.json": "19d334551da82837ae6a17cc7116e48d2fdcd45102fa641d4a01d247255dd96b",
     "ui-idle.png": "7e9453bd97b3bd49d32935dc618056d511b352e2394d23925aa51008b9958a8b",
-    "ui-speaking.png": "519bf9a91408a1cde24ec27d40d2975ccf39e99fa9d310f817fd1a4b4db66b2a",
-    "ui-mobile.png": "8277e88f59441ca1bb76f12be2b3c95c1450c48f688de46b251e7f2ef9801014",
-    "face-builder.png": "9579516236eb20677e6841b02f86439f972b61ccb1d513bb1ad6efedf88bb3b2",
-    "face-speaking.png": "8a3714c769177a101cd0b66c2a4e12cf1fa5822c39a30d8aa5ce735fc0f23120",
+    "ui-speaking.png": "d512c4cc7f2a15987c36a43c7918ccc006254027bbd2945f50ef78f2fae2ead6",
+    "ui-mobile.png": "059dda758dcaa8779bf42e67c225f1aa78ad1f618389b6ae5a65d1e575cc5d16",
+    "face-builder.png": "ad20ad756a48215af01aee2913eb913e593b7da0ae984e3825a4b758624233d5",
+    "face-speaking.png": "fbab74ed54d6f316203b77433894335db8199e866e53015fb44231934f7a0b6f",
     "mock-tone.wav": "03ba780f9e4b44d9efe08b1391c700b3ba892efbfa177c163ae7b190a284005e",
-    "npm-tests.tap": "0396bd43d14719042321264631e211c43830856b3543a0de787157d9c1c13ace"
+    "npm-tests.tap": "69e8822b2a03e4251b43800bf80b57637d9c5e4eb16095c25bf79a4b86586b05"
   },
   "scope": "synthetic mock only; not real speech, Mac, first-audible latency or audio/video synchronization",
   "browser_cases": [
