@@ -30,6 +30,11 @@ generated_audio/
 generated_video/
 models/
 checkpoints/
+.venv-*/
+.e2e-data/
+test-results/
+playwright-report/
+.pytest_cache/
 *.safetensors
 *.ckpt
 *.pth

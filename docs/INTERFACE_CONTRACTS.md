@@ -1,6 +1,6 @@
 # DigitalMe — API 與資料契約（設計草案）
 
-此為規格提案；尚未實作，變更需同步契約測試。
+原始規格提案保留如下；目前 P0 REST 與新增本機記憶／聲音 CRUD 已實作，實際欄位與錯誤契約以 FastAPI `/openapi.json`、[實作說明](IMPLEMENTATION.md) 與 `tests/test_api.py` 為準。`/api/turn` 首版使用 JSON 文字輸入與 base64 WAV 回覆，非串流事件；STT 獨立先取得可編輯逐字稿。
 
 ## Endpoints（P0）
 - `GET /health` → `{status, backend_status, version}`；**不得**洩露本機檔案路徑或 secrets。

@@ -56,3 +56,16 @@ SadTalker：https://github.com/OpenTalker/SadTalker
 
 ## 5. 調研決策原則
 先驗證用戶真正要的**互動、聲音與熟悉感**，再投資昂貴的擬真視覺。任何「Real-Time」、「支持 Mac」聲稱都必須在指定硬體和目標聲音樣本上跑 benchmark，不能把 NVIDIA CUDA benchmark 套用在 Apple M 系列。
+
+## 6. 本次接手查證與實作決策（2026-10-14）
+
+| 元件 | 原始維護者資料 | 授權與角色 | 本次觀察 |
+|---|---|---|---|
+| Qwen3-TTS | [QwenLM 官方](https://github.com/QwenLM/Qwen3-TTS) | Apache-2.0 repo；Base 支援 reference clone | 選新候選；未下載權重、未測 Mac |
+| MLX Audio | [維護者 repo](https://github.com/Blaizzy/mlx-audio)、[Qwen3-TTS 文件](https://blaizzy.github.io/mlx-audio/models/tts/qwen3-tts/) | MIT library；模型權重條款需各別確認；非 Qwen 官方 Apple backend | 新增隔離 worker；查閱 `generate(text, ref_audio, ref_text, lang_code)` 原碼介面；未宣稱品質／速度 |
+| XTTS v2 | [官方模型卡](https://huggingface.co/coqui/XTTS-v2) | 模型使用 Coqui Public Model License，不可等同 MIT／Apache | 只做 legacy adapter，未更動舊環境 |
+| Whisper | [OpenAI repo](https://github.com/openai/whisper) | MIT；本地辨識需權重與 ffmpeg | 新增隔離 worker，合成音 mock STT 契約已測；真實辨識未測 |
+| LivePortrait | [官方 repo（已重新導向）](https://github.com/KlingAIResearch/LivePortrait) | 程式 MIT；相依模型／人臉套件需分別檢視 | 不把動作轉移直接當成完整語音對嘴；暫留後續評估 |
+| 2D Web Audio Avatar | 本 Repo 自行實作 | 不需外部人像模型或私人照片 | 以實際 PCM RMS 開合嘴部，瀏覽器 E2E 檢查；不宣稱 phoneme-perfect |
+
+本次沒有用雲端 SaaS 複製私人聲音。採新 MLX 路徑、舊 XTTS 對照，避免重做已成功的 2025 環境。先用已審核文字記憶卡建立來源與撤回流程，再評估語義檢索／時間線。非串流、每次重新載入模型的 worker 有明顯延遲代價，必須經真機測試才能決定常駐模型與記憶體配置；沒有 M4／M6 benchmark 數據。
