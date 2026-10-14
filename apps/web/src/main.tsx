@@ -2,6 +2,9 @@ import React, { useEffect, useRef, useState } from "react";
 import { createRoot } from "react-dom/client";
 import { mouthScale } from "./audio.mjs";
 import "./style.css";
+import FaceBuilder from "./FaceBuilder";
+import FaceViewer, { type Motion } from "./FaceViewer";
+import { sampleMotion } from "./face-motion.mjs";
 
 type Voice = { profile_id: string; duration_seconds: number };
 type Memory = { memory_id: string; title: string; text: string };
@@ -12,6 +15,9 @@ type Turn = {
   evidence_refs: Memory[];
   audio_base64: string;
   timings: Record<string, number>;
+  animation?: {
+    frames: { time: number; jawOpen: number; mouthPucker: number }[];
+  };
 };
 async function api(path: string, options: RequestInit = {}) {
   const r = await fetch(path, options);
@@ -46,6 +52,12 @@ function App() {
   const [title, setTitle] = useState(""),
     [memoryText, setMemoryText] = useState(""),
     [reviewed, setReviewed] = useState(false);
+  const [activeModel, setActiveModel] = useState<ArrayBuffer | null>(null),
+    [lipEngine, setLipEngine] = useState("rms");
+  const motion = useRef<Motion>({ jawOpen: 0, mouthPucker: 0 }),
+    clipFrames = useRef<
+      { time: number; jawOpen: number; mouthPucker: number }[] | null
+    >(null);
   const session = useRef(crypto.randomUUID()),
     generation = useRef(0),
     controller = useRef<AbortController | null>(null),
@@ -83,6 +95,7 @@ function App() {
     audio.current?.pause();
     if (audio.current) audio.current.currentTime = 0;
     setPlaying(false);
+    motion.current = { jawOpen: 0, mouthPucker: 0 };
     setBusy(false);
     setStatus("已中斷；可修改文字後重試");
   }
@@ -99,6 +112,12 @@ function App() {
         const data = new Float32Array(analyser.fftSize);
         const draw = () => {
           analyser.getFloatTimeDomainData(data);
+          if (audio.current && !audio.current.paused)
+            motion.current = clipFrames.current
+              ? sampleMotion(clipFrames.current, audio.current.currentTime)
+              : { jawOpen: mouthScale(Array.from(data)), mouthPucker: 0 };
+          else if (!motion.current.manual)
+            motion.current = { jawOpen: 0, mouthPucker: 0 };
           if (mouth.current)
             mouth.current.style.height = `${5 + mouthScale(Array.from(data)) * 28}px`;
           frame.current = requestAnimationFrame(draw);
@@ -132,6 +151,18 @@ function App() {
           body: JSON.stringify({ text, engine: tts, voice_id: voice }),
         });
         blob = await r.blob();
+        const form = new FormData();
+        form.append("audio", blob, "generated.wav");
+        form.append("engine", lipEngine);
+        clipFrames.current = (
+          await (
+            await api("/api/lipsync", {
+              method: "POST",
+              body: form,
+              signal: controller.current.signal,
+            })
+          ).json()
+        ).frames;
       } else {
         const r = await api("/api/turn", {
           method: "POST",
@@ -145,12 +176,14 @@ function App() {
             voice_id: voice,
             memory_mode: ground ? "reviewed" : "off",
             cloud_consent: cloud,
+            lipsync_engine: lipEngine,
           }),
         });
         const turn: Turn = await r.json();
         if (gen !== generation.current) return;
         setMessages((m) => [...m, { user: text, turn }]);
         setTimings(turn.timings);
+        clipFrames.current = turn.animation?.frames || null;
         blob = new Blob(
           [Uint8Array.from(atob(turn.audio_base64), (c) => c.charCodeAt(0))],
           { type: "audio/wav" },
@@ -167,6 +200,50 @@ function App() {
       setStatus(
         tts === "mock" ? "已完成 · 測試音，非人聲" : "AI 生成聲音已準備",
       );
+      await play();
+    } catch (e) {
+      if ((e as Error).name !== "AbortError") setError((e as Error).message);
+    } finally {
+      if (gen === generation.current) setBusy(false);
+    }
+  }
+  async function audition(message: string) {
+    cancel();
+    const gen = generation.current;
+    controller.current = new AbortController();
+    setBusy(true);
+    setError("");
+    ctx.current ||= new AudioContext();
+    await ctx.current.resume();
+    try {
+      const blob = await (
+        await api("/api/tts", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ text: message, engine: tts, voice_id: voice }),
+          signal: controller.current.signal,
+        })
+      ).blob();
+      const form = new FormData();
+      form.append("audio", blob, "generated.wav");
+      form.append("engine", lipEngine);
+      const animation = await (
+        await api("/api/lipsync", {
+          method: "POST",
+          body: form,
+          signal: controller.current.signal,
+        })
+      ).json();
+      if (gen !== generation.current) return;
+      clipFrames.current = animation.frames;
+      URL.revokeObjectURL(audioURL.current);
+      audioURL.current = URL.createObjectURL(blob);
+      if (audio.current) {
+        audio.current.src = audioURL.current;
+        audio.current.load();
+      }
+      setAudioReady(true);
+      setStatus("模型語音測試 · " + animation.driver);
       await play();
     } catch (e) {
       if ((e as Error).name !== "AbortError") setError((e as Error).message);
@@ -318,6 +395,7 @@ function App() {
         <nav>
           {[
             ["studio", "◉", "對話工作室"],
+            ["face", "◇", "人臉模型建立"],
             ["archive", "▤", "記憶與聲音"],
             ["verify", "✓", "驗證與狀態"],
           ].map(([id, icon, label]) => (
@@ -354,7 +432,9 @@ function App() {
               ? "對話工作室"
               : tab === "archive"
                 ? "記憶與聲音"
-                : "驗證與狀態"}
+                : tab === "face"
+                  ? "人臉模型建立"
+                  : "驗證與狀態"}
           </div>
           <span className="pill">◌ LOCAL WORKSPACE</span>
         </header>
@@ -366,14 +446,18 @@ function App() {
                 ? "讓故事，繼續被聽見。"
                 : tab === "archive"
                   ? "從真實留下的紀錄開始。"
-                  : "每一步，都有驗證依據。"}
+                  : tab === "face"
+                    ? "讓聲音，有熟悉的模樣。"
+                    : "每一步，都有驗證依據。"}
             </h1>
             <p>
               {tab === "studio"
                 ? "熟悉的聲音，承載值得留下的話。從今天的一段對話開始。"
                 : tab === "archive"
                   ? "只有你確認過的記憶，才會成為分身的參考來源。"
-                  : "測試模式與真實模型分開呈現；未驗證項目保留標記。"}
+                  : tab === "face"
+                    ? "從雙目採集到可說話的曲面模型，全程保留在本機。"
+                    : "測試模式與真實模型分開呈現；未驗證項目保留標記。"}
             </p>
           </div>
         </section>
@@ -399,94 +483,110 @@ function App() {
                   setImage(e.dataTransfer.files[0]);
                 }}
               >
-                <div className="card-top">
-                  <span>YOUR DIGITAL PRESENCE</span>
-                  <span className="badge">2D · 近似嘴型</span>
-                </div>
-                <div className={"portrait-area " + (playing ? "speaking" : "")}>
-                  <div className="orbit one" />
-                  <div className="orbit two" />
-                  <div className="portrait">
-                    {portrait ? (
-                      <img src={portrait} alt="本機授權肖像" />
-                    ) : (
-                      <svg viewBox="0 0 260 280" aria-label="合成示意頭像">
-                        <path
-                          d="M25 280 Q25 215 95 206 L165 206 Q235 215 235 280"
-                          fill="#e0b78e"
-                        />
-                        <path
-                          d="M99 190 V222 Q130 240 161 222 V190"
-                          fill="#bf8c68"
-                        />
-                        <ellipse
-                          cx="130"
-                          cy="119"
-                          rx="71"
-                          ry="91"
-                          fill="#ddb28b"
-                        />
-                        <path
-                          d="M60 117 Q27 21 108 15 Q195 -5 201 85 L193 118 L179 74 Q119 98 77 69 Z"
-                          fill="#35433d"
-                        />
-                        <g className="eyes" fill="#35433d">
-                          <ellipse cx="101" cy="124" rx="5" ry="4" />
-                          <ellipse cx="160" cy="124" rx="5" ry="4" />
-                        </g>
-                        <path
-                          d="M130 130 L123 152 L136 152"
-                          fill="none"
-                          stroke="#bc8766"
-                          strokeWidth="3"
-                        />
-                        <path
-                          d="M84 111 L113 109 M146 109 L173 111"
-                          stroke="#535247"
-                          strokeWidth="4"
-                          strokeLinecap="round"
-                        />
-                      </svg>
-                    )}
-                    <div className="mouth" ref={mouth} />
-                  </div>
-                  <span className="presence-label">
-                    {playing ? "正在播放" : "安靜聆聽，等待下一個故事"}
-                  </span>
-                </div>
-                <div className="wave">
-                  {Array.from({ length: 35 }, (_, i) => (
-                    <i
-                      key={i}
-                      style={{
-                        height: playing ? `${8 + ((i * 13) % 27)}px` : "4px",
-                        animationDelay: `${i * 0.025}s`,
-                      }}
-                    />
-                  ))}
-                </div>
-                <div className="avatar-bottom">
-                  <label className="link">
-                    ＋ 選擇本機肖像
-                    <input
-                      aria-label="選擇本機肖像"
-                      type="file"
-                      accept="image/*"
-                      onChange={(e) => setImage(e.target.files?.[0])}
-                    />
-                  </label>
-                  {portrait && (
-                    <button
-                      onClick={() => {
-                        URL.revokeObjectURL(portraitURL.current);
-                        setPortrait("");
-                      }}
-                    >
-                      移除
+                {activeModel ? (
+                  <>
+                    <FaceViewer model={activeModel} drive={motion} />
+                    <button onClick={() => setActiveModel(null)}>
+                      移除 3D 模型
                     </button>
-                  )}
-                  <small>圖片僅在此瀏覽器頁面顯示，可拖曳放入</small>
-                </div>
+                  </>
+                ) : (
+                  <>
+                    {" "}
+                    <div className="card-top">
+                      <span>YOUR DIGITAL PRESENCE</span>
+                      <span className="badge">2D · 近似嘴型</span>
+                    </div>
+                    <div
+                      className={"portrait-area " + (playing ? "speaking" : "")}
+                    >
+                      <div className="orbit one" />
+                      <div className="orbit two" />
+                      <div className="portrait">
+                        {portrait ? (
+                          <img src={portrait} alt="本機授權肖像" />
+                        ) : (
+                          <svg viewBox="0 0 260 280" aria-label="合成示意頭像">
+                            <path
+                              d="M25 280 Q25 215 95 206 L165 206 Q235 215 235 280"
+                              fill="#e0b78e"
+                            />
+                            <path
+                              d="M99 190 V222 Q130 240 161 222 V190"
+                              fill="#bf8c68"
+                            />
+                            <ellipse
+                              cx="130"
+                              cy="119"
+                              rx="71"
+                              ry="91"
+                              fill="#ddb28b"
+                            />
+                            <path
+                              d="M60 117 Q27 21 108 15 Q195 -5 201 85 L193 118 L179 74 Q119 98 77 69 Z"
+                              fill="#35433d"
+                            />
+                            <g className="eyes" fill="#35433d">
+                              <ellipse cx="101" cy="124" rx="5" ry="4" />
+                              <ellipse cx="160" cy="124" rx="5" ry="4" />
+                            </g>
+                            <path
+                              d="M130 130 L123 152 L136 152"
+                              fill="none"
+                              stroke="#bc8766"
+                              strokeWidth="3"
+                            />
+                            <path
+                              d="M84 111 L113 109 M146 109 L173 111"
+                              stroke="#535247"
+                              strokeWidth="4"
+                              strokeLinecap="round"
+                            />
+                          </svg>
+                        )}
+                        <div className="mouth" ref={mouth} />
+                      </div>
+                      <span className="presence-label">
+                        {playing ? "正在播放" : "安靜聆聽，等待下一個故事"}
+                      </span>
+                    </div>
+                    <div className="wave">
+                      {Array.from({ length: 35 }, (_, i) => (
+                        <i
+                          key={i}
+                          style={{
+                            height: playing
+                              ? `${8 + ((i * 13) % 27)}px`
+                              : "4px",
+                            animationDelay: `${i * 0.025}s`,
+                          }}
+                        />
+                      ))}
+                    </div>
+                    <div className="avatar-bottom">
+                      <label className="link">
+                        ＋ 選擇本機肖像
+                        <input
+                          aria-label="選擇本機肖像"
+                          type="file"
+                          accept="image/*"
+                          onChange={(e) => setImage(e.target.files?.[0])}
+                        />
+                      </label>
+                      {portrait && (
+                        <button
+                          onClick={() => {
+                            URL.revokeObjectURL(portraitURL.current);
+                            setPortrait("");
+                          }}
+                        >
+                          移除
+                        </button>
+                      )}
+                      <small>圖片僅在此瀏覽器頁面顯示，可拖曳放入</small>
+                    </div>
+                  </>
+                )}
               </section>
               <section className="composer">
                 <div className="segmented">
@@ -701,6 +801,21 @@ function App() {
             </div>
           </>
         )}
+        {tab === "face" && (
+          <FaceBuilder
+            drive={motion}
+            onUse={(model) => {
+              setActiveModel(model);
+              setTab("studio");
+            }}
+            onSpeak={audition}
+            busy={busy}
+            ttsEngine={tts}
+            voiceId={voice}
+            lipEngine={lipEngine}
+            onLipEngine={setLipEngine}
+          />
+        )}
         {tab === "archive" && (
           <div className="archive-grid">
             <section className="panel">
@@ -847,6 +962,15 @@ function App() {
               </tbody>
             </table>
           </section>
+        )}
+        {tab === "face" && (
+          <div className="playback">
+            <span>{status}</span>
+            <button onClick={cancel}>中斷模型試音</button>
+            <button onClick={() => setMuted(!muted)}>
+              {muted ? "取消靜音" : "靜音"}
+            </button>
+          </div>
         )}
         <audio
           ref={audio}

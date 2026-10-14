@@ -6,13 +6,15 @@
 
 ## 立即操作
 
+**新增：雙目人臉模型工作台**。以先前選擇的 Arducam B0645 為設備預設，提供本機 SBS 採集、棋盤格校正、CPU 深度曲面、帶貼圖／形變的 GLB、3D 預覽與語音時間軸，並可套用至對話頁。首版是 **正面 2.5D＋程序形變原型**；本人完整頭模、實機精度與精確對嘴尚未驗收。操作、工具選型與缺口請看 [FACE_STUDIO.md](docs/FACE_STUDIO.md)。
+
 已實作 React + FastAPI 工作室：文字／錄音輸入、可編輯逐字稿、多輪對話、WAV 播放、RMS 2D 頭像、授權聲音與記憶卡管理、來源揭露及清除。XTTS、Qwen3-TTS MLX、Whisper 以獨立 Python 程序接入，LLM 可選本地相容 API 或明確同意後的 OpenAI 文字 API。
 
 ```bash
 # Python 3.12、Node 22.12+、Git、make
 git clone https://github.com/pcpcchen-coder/DigitalMe.git
 cd DigitalMe
-git switch codex/reboot-mvp
+git switch codex/stereo-face-studio
 make setup
 make dev
 # 開啟 http://127.0.0.1:8765
@@ -82,6 +84,7 @@ Mic / text input
 - [路線圖、測試與驗收](docs/ROADMAP_ACCEPTANCE.md)
 - [Work / Coding Agent 接手指令](docs/WORK_HANDOFF.md)
 - [Agent 工作規則](AGENTS.md)
+- [雙目人臉模型建立與工具選型](docs/FACE_STUDIO.md)
 
 ## 隱私與公開 Repo 規則
 

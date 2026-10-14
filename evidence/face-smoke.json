@@ -1,0 +1,28 @@
+{
+  "source_commit": "ab09aba355e2f997fb327ee62c3c54599b62748c",
+  "timestamp": "2026-10-14T01:43:27.371101+00:00",
+  "os": "Linux",
+  "arch": "x86_64",
+  "scope": "synthetic calibrated stereo only; no owner face or physical camera",
+  "hardware_verified": false,
+  "full_head": false,
+  "anatomical_rig": false,
+  "reconstruction_ms": 156.847,
+  "vertices": 3539,
+  "triangles": 6562,
+  "valid_ratio": 0.9161,
+  "glb_bytes": 533748,
+  "glb_sha256": "2acc28504ddaf9aaf6eff393069b003228f470b9dbbeb255df1cf4871c0bff3c",
+  "morph_targets": [
+    "jawOpen",
+    "mouthPucker",
+    "eyeBlinkLeft",
+    "eyeBlinkRight"
+  ],
+  "deletion_verified": true,
+  "motion_frames": 53,
+  "max_jaw_open": 0.8597969500640552,
+  "audio_duration_seconds": 1.04,
+  "driver": "rms_approximate",
+  "last_frame_rest": true
+}

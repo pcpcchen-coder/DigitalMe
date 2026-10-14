@@ -4,6 +4,7 @@ import html
 import json
 from pathlib import Path
 import statistics
+import re
 import xml.etree.ElementTree as ET
 
 root = Path(__file__).resolve().parents[1]/'evidence'
@@ -34,5 +35,13 @@ assert stats['python_vulnerabilities'] == sum(len(d.get('vulns', [])) for d in l
 page = (root/'index.html').read_text()
 for key, value in stats.items():
     assert f'<small>{html.escape(key)}</small><b>{html.escape(str(value))}</b>' in page, key
-assert len(manifest['matrix']) == 10 and manifest['matrix'][1][1] == 'UNVERIFIED'
-print(json.dumps({'verified': True, 'artifact_hashes': len(manifest['sha256']), 'board_metrics': len(stats), 'criteria': 10}))
+for key,pattern in [('frontend_total',r'(?:ℹ|#) tests (\d+)'),('frontend_passed',r'(?:ℹ|#) pass (\d+)')]:
+    assert stats[key]==int(re.search(pattern,(root/'npm-tests.tap').read_text()).group(1))
+if (root/'face-smoke.json').exists():
+    face=load('face-smoke.json')
+    assert stats['synthetic_surface_vertices']==face['vertices']
+    assert stats['synthetic_surface_triangles']==face['triangles']
+    assert stats['synthetic_motion_frames']==face['motion_frames']
+    assert face['hardware_verified'] is False and face['last_frame_rest'] is True
+assert len(manifest['matrix']) == (18 if (root/'face-smoke.json').exists() else 10) and manifest['matrix'][1][1] == 'UNVERIFIED'
+print(json.dumps({'verified': True, 'artifact_hashes': len(manifest['sha256']), 'board_metrics': len(stats), 'criteria':len(manifest['matrix'])}))

@@ -24,6 +24,18 @@
       "before": "test host lacked Chinese glyphs",
       "action": "installed Noto Sans CJK TC on test host only; no external font requests added to app",
       "after": "screenshots recaptured for visual review"
+    },
+    {
+      "case": "stereo-opencv-translation-shape",
+      "before": "OpenCV 5 stereoRectify rejected a flat translation vector",
+      "action": "use explicit 3x1 calibrated translation; virtual baseline and depth regression tests added",
+      "after": "37 backend tests pass"
+    },
+    {
+      "case": "embedded-glb-texture",
+      "before": "CSP blocked fetching embedded image blob; model displayed without texture",
+      "action": "allow same-origin blob connections and assert texture presence plus actual mesh morph weights in browser",
+      "after": "textured stereo GLB and audio-driven morph browser test passed"
     }
   ]
 }

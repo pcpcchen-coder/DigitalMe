@@ -7,8 +7,8 @@ import subprocess
 ROOT = Path(__file__).resolve().parents[1]
 files = subprocess.check_output(['git', 'ls-files', '-z', '--cached'], cwd=ROOT).decode().split('\0')
 blocked = {'private_data', 'personal_data', 'recordings', 'voice_samples', 'speaker_embeddings', 'family_archive', '.e2e-data'}
-media = {'.wav', '.mp3', '.m4a', '.mp4', '.mov', '.jpg', '.jpeg', '.png', '.webm', '.pem', '.key', '.pth', '.pt', '.safetensors'}
-allowed = {'evidence/mock-tone.wav', 'evidence/ui-idle.png', 'evidence/ui-speaking.png', 'evidence/ui-mobile.png'}
+media = {'.wav', '.mp3', '.m4a', '.mp4', '.mov', '.jpg', '.jpeg', '.png', '.webm', '.pem', '.key', '.pth', '.pt', '.safetensors', '.glb', '.gltf', '.ply', '.obj', '.fbx', '.stl', '.npz'}
+allowed = {'evidence/mock-tone.wav', 'evidence/ui-idle.png', 'evidence/ui-speaking.png', 'evidence/ui-mobile.png', 'evidence/face-builder.png', 'evidence/face-speaking.png'}
 patterns = [re.compile(rb'sk-[A-Za-z0-9_-]{24,}'), re.compile(rb'gh[pousr]_[A-Za-z0-9]{30,}'), re.compile(rb'-----BEGIN (?:RSA |EC |OPENSSH )?PRIVATE KEY-----')]
 findings = []
 for name in filter(None, files):

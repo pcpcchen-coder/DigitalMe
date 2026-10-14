@@ -10,6 +10,7 @@ test:
 	cd apps/web && npm test > ../../evidence/npm-tests.tap && npm run build
 smoke:
 	.venv/bin/python scripts/smoke.py
+	.venv/bin/python scripts/face_smoke.py
 evidence:
 	.venv/bin/python scripts/evidence.py
 	.venv/bin/python scripts/verify_evidence.py

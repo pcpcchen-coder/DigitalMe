@@ -1,13 +1,15 @@
 
 > digitalme-web@0.1.0 test
-> node --test src/audio.test.mjs
+> node --test src/*.test.mjs
 
-✔ silence closes mouth, amplitude drives bounded opening (2.805471ms)
-ℹ tests 1
+✔ silence closes mouth, amplitude drives bounded opening (2.12542ms)
+✔ speech motion follows audio time, ends at rest, and seeks deterministically (1.838052ms)
+✔ GLB import blocks external requests and requires jaw morph (1.311898ms)
+ℹ tests 3
 ℹ suites 0
-ℹ pass 1
+ℹ pass 3
 ℹ fail 0
 ℹ cancelled 0
 ℹ skipped 0
 ℹ todo 0
-ℹ duration_ms 328.143533
+ℹ duration_ms 152.169344

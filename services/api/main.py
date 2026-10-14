@@ -18,6 +18,8 @@ from pydantic import BaseModel, Field
 from starlette.middleware.trustedhost import TrustedHostMiddleware
 
 from .adapters import BackendError, Dialogue, Recognition, ROOT, Speech
+from .face_routes import create_router as create_face_router
+from .lipsync import timeline
 
 app = FastAPI(title='DigitalMe local API', version='0.1.0', docs_url=None, redoc_url=None)
 app.add_middleware(TrustedHostMiddleware, allowed_hosts=['127.0.0.1', 'localhost', '[::1]', 'testserver'])
@@ -47,7 +49,7 @@ async def local_boundary(request, call_next):
     response.headers['Cache-Control'] = 'no-store'
     response.headers['X-Content-Type-Options'] = 'nosniff'
     response.headers['Referrer-Policy'] = 'no-referrer'
-    response.headers['Content-Security-Policy'] = "default-src 'self'; img-src 'self' blob:; media-src 'self' blob:; connect-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self'; frame-ancestors 'none'"
+    response.headers['Content-Security-Policy'] = "default-src 'self'; img-src 'self' blob:; media-src 'self' blob:; connect-src 'self' blob:; style-src 'self' 'unsafe-inline'; script-src 'self'; frame-ancestors 'none'"
     return response
 
 
@@ -131,6 +133,7 @@ class ChatRequest(BaseModel):
 class TurnRequest(ChatRequest):
     tts_engine: TTS = 'mock'
     voice_id: str = 'synthetic'
+    lipsync_engine: Literal['rms','rhubarb'] = 'rms'
 
 
 class Memory(BaseModel):
@@ -183,9 +186,13 @@ async def dialogue(req, synthesize=False):
         reply = await Dialogue(req.engine).reply(messages, refs)
         llm_ms = (time.perf_counter() - start) * 1000
         audio = None
+        animation = None
+        tts_end = time.perf_counter()
         if synthesize:
             async with model_lock:
                 audio = await Speech(req.tts_engine).synthesize(reply, reference(req.voice_id))
+            tts_end = time.perf_counter()
+            animation = await timeline(audio,req.lipsync_engine)
         end = time.perf_counter()
         if sessions.get(req.session_id) is not state:
             raise HTTPException(409, 'SESSION_REVOKED')
@@ -196,7 +203,9 @@ async def dialogue(req, synthesize=False):
             'evidence_refs': refs, 'disclosure': 'ai_generated', 'llm_backend': req.engine,
             'voice_backend': req.tts_engine if synthesize else None,
             'audio_base64': base64.b64encode(audio).decode() if audio else None,
-            'timings': {'llm_ms': round(llm_ms, 3), 'tts_ms': round((end-start)*1000-llm_ms, 3),
+            'animation': animation,
+            'timings': {'llm_ms': round(llm_ms, 3), 'tts_ms': round((tts_end-start)*1000-llm_ms, 3),
+                        'lipsync_ms': round((end-tts_end)*1000,3),
                         'total_ms': round((end-start)*1000, 3)}}
     finally:
         state['busy'] = False
@@ -320,6 +329,16 @@ async def delete_memory(memory_id: str):
     sessions.clear()
     return {'deleted': True, 'sessions_cleared': True}
 
+
+@app.post('/api/lipsync')
+async def lipsync(request:Request,audio:UploadFile=File(...),engine:Literal['rms','rhubarb']=Form('rms')):
+    raw=await audio.read(10*1024*1024+1)
+    if len(raw)>10*1024*1024:
+        raise HTTPException(413,'AUDIO_SIZE_INVALID')
+    return await cancellable(request,timeline(raw,engine))
+
+
+app.include_router(create_face_router(lambda:PRIVATE))
 
 dist = ROOT / 'apps/web/dist'
 if dist.exists():

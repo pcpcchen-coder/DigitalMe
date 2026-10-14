@@ -1,24 +1,29 @@
 {
-  "generated_at": "2026-10-14T01:09:06.291123+00:00",
-  "source_commit": "ebf69681fea995b353505620cf1f4a8c9ba8e641",
+  "generated_at": "2026-10-14T01:44:12.765885+00:00",
+  "source_commit": "ab09aba355e2f997fb327ee62c3c54599b62748c",
   "environment": {
     "os": "Linux",
     "arch": "x86_64",
     "python": "3.12.14"
   },
   "stats": {
-    "python_passed": 28,
-    "python_total": 28,
-    "browser_passed": 9,
-    "browser_total": 9,
+    "python_passed": 37,
+    "python_total": 37,
+    "browser_passed": 11,
+    "browser_total": 11,
     "tts_passed": 10,
     "tts_total": 10,
     "dialogue_passed": 20,
     "dialogue_total": 20,
-    "mock_p50_ms": 25.557000000000002,
+    "mock_p50_ms": 21.7545,
     "privacy_scan": true,
     "npm_vulnerabilities": 0,
-    "python_vulnerabilities": 0
+    "python_vulnerabilities": 0,
+    "frontend_total": 3,
+    "frontend_passed": 3,
+    "synthetic_surface_vertices": 3539,
+    "synthetic_surface_triangles": 6562,
+    "synthetic_motion_frames": 53
   },
   "matrix": [
     [
@@ -90,24 +95,91 @@
       "Lockfiles, build and smoke tested; Mac clean clone not tested",
       "make setup test smoke",
       "python-tests.xml"
+    ],
+    [
+      "AF-01",
+      "UNVERIFIED",
+      "B0645 physical device, firmware, Mac UVC layout / sync verification pending",
+      "Mac camera capture",
+      null
+    ],
+    [
+      "AF-02",
+      "PARTIAL",
+      "Virtual chessboard baseline recovery tested; real calibration and measured depth error pending",
+      "make test",
+      "python-tests.xml"
+    ],
+    [
+      "AF-03",
+      "PARTIAL",
+      "CPU SGBM metric virtual stereo surface; real skin / hair / eye depth unverified",
+      "make smoke",
+      "face-smoke.json"
+    ],
+    [
+      "AF-04",
+      "PARTIAL",
+      "Embedded textured GLB and actual morph weights tested with synthetic surface; owner likeness unverified",
+      "npm run e2e",
+      "browser-tests.json"
+    ],
+    [
+      "AF-05",
+      "PARTIAL",
+      "RMS timeline follows playback time and interrupts; Rhubarb Mandarin and AV offset unverified",
+      "make test; npm run e2e",
+      "face-smoke.json"
+    ],
+    [
+      "AF-06",
+      "PARTIAL",
+      "Local scan deletion and external GLB URI blocking tested; no secure-erasure guarantee",
+      "make test",
+      "python-tests.xml"
+    ],
+    [
+      "AF-07",
+      "UNVERIFIED",
+      "Full head / multi-view fusion / anatomical retopology / teeth / eyelids not implemented",
+      "future reconstruction/rig work",
+      null
+    ],
+    [
+      "AF-08",
+      "UNVERIFIED",
+      "Real owner voice + owner scan + family likeness and naturalness acceptance pending",
+      "Mac private acceptance",
+      null
     ]
   ],
   "sha256": {
-    "smoke.json": "372a464541db52a5ef14ea66d0d65a51e9711fa5df72bed75b433c64961dcf52",
-    "python-tests.xml": "e78a6c6bac6d8c712d979c2f1a03b44dc7cb84b68b1c31010db9866fbebe8b10",
-    "browser-tests.json": "1c8bd8b8000fbb02f6c73ecefdb785912d6e602aa76b8258e56d63d52dc33505",
-    "privacy-scan.json": "c51a38442b0ac3587eeaf08f5524ad25154e83985c9467ed472a6e17bdd6dd4d",
-    "npm-audit.json": "d6ed6ac5d60dcb110adaaa2b7a9855042863acbf6059cf56d01e0b1a6fa259d5",
-    "python-audit.json": "484b48be1b1fdc64e251e03329fe77a7f1f89e08f7a2b5597b19d727e370c1b1",
-    "regressions.json": "e15e91d8e8cbae992253b36dcb7c6184d3e8e2ec89b1b10328d2e7b608369fc2",
-    "ui-idle.png": "48018596d5fdcdaf8fb8441b76fc15a7e2a464402f39b913570875299cdac541",
-    "ui-speaking.png": "71f19ce0e8672c0e34c976fb519d839ade7d7a2141d45b3810d393730f9ff2ac",
-    "ui-mobile.png": "e5983dfec32c054810ce6a896d14614d7ca4cebc324c4047fad862870f328698",
+    "smoke.json": "8532120be1250cf49f5e616f8241b5866e1c64a87e14cc627c2a8c3f243b2f05",
+    "face-smoke.json": "f8c77faed03dfa3e5589f30c0be9f813c3fe042dfebc4a568473dda00856583c",
+    "python-tests.xml": "8e95180372d11c0760e291f767d2ffb3433b4baf6ceeb17e22907516b1c321f3",
+    "browser-tests.json": "70271860d16dee3835b00204ff1103085ba94135c48de8094e73e3c7a4919e9c",
+    "privacy-scan.json": "85f31825c6f2b278bf3e840e5730ee084e9a4221a80ee699a96007abbd6c3abe",
+    "npm-audit.json": "5adade60a1fa0913e088c2a5eebad00bc33d8179d806f9fe9cae401787767e9b",
+    "python-audit.json": "9f871a5efc045d685bf966cbca5971495535b454bb3a15f41749803d12555f3a",
+    "regressions.json": "19d334551da82837ae6a17cc7116e48d2fdcd45102fa641d4a01d247255dd96b",
+    "ui-idle.png": "7e9453bd97b3bd49d32935dc618056d511b352e2394d23925aa51008b9958a8b",
+    "ui-speaking.png": "d512c4cc7f2a15987c36a43c7918ccc006254027bbd2945f50ef78f2fae2ead6",
+    "ui-mobile.png": "059dda758dcaa8779bf42e67c225f1aa78ad1f618389b6ae5a65d1e575cc5d16",
+    "face-builder.png": "ad20ad756a48215af01aee2913eb913e593b7da0ae984e3825a4b758624233d5",
+    "face-speaking.png": "fbab74ed54d6f316203b77433894335db8199e866e53015fb44231934f7a0b6f",
     "mock-tone.wav": "03ba780f9e4b44d9efe08b1391c700b3ba892efbfa177c163ae7b190a284005e",
-    "npm-tests.tap": "2c1634998e876e6fe2db35d300d7898e83fc418176bdf88ef3416e3fcb86eca0"
+    "npm-tests.tap": "69e8822b2a03e4251b43800bf80b57637d9c5e4eb16095c25bf79a4b86586b05"
   },
   "scope": "synthetic mock only; not real speech, Mac, first-audible latency or audio/video synchronization",
   "browser_cases": [
+    {
+      "title": "stereo demo reconstructs embedded GLB, deforms, speaks, and applies to conversation",
+      "ok": true
+    },
+    {
+      "title": "face workflow requires ownership, real calibration and handles camera denial",
+      "ok": true
+    },
     {
       "title": "Chinese text, playable audio and RMS avatar, interrupt, clear",
       "ok": true
