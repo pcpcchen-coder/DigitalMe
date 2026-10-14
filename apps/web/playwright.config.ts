@@ -14,6 +14,7 @@ export default defineConfig({
       args: [
         "--use-fake-device-for-media-stream",
         "--autoplay-policy=no-user-gesture-required",
+        "--enable-unsafe-swiftshader",
       ],
     },
     permissions: ["microphone"],

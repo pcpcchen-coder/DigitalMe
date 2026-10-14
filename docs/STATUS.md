@@ -2,6 +2,12 @@
 
 狀態是實際觀察，不代表規格全部完成。精確時間、source commit、測試數字與原始輸出見 [`evidence/manifest.json`](../evidence/manifest.json)。
 
+## 新增：雙目人臉工作台
+
+已新增 B0645 設備預設、瀏覽器單幀 SBS 採集、校正板下載、至少 12 對棋盤格校正／品質門檻、CPU SGBM 左右一致性與深度曲面、貼圖 GLB、四個程序 morph targets、Three.js 預覽／匯入／套用與同一播放器的嘴型時間軸。Rhubarb adapter 可配置，但本機執行檔與中文品質未驗證。原先 XTTS 環境未碰觸。
+
+程式產生的虛擬棋盤格可恢復已知基線、已知視差可恢復尺度，合成 GLB 可顯示貼圖並設定實際 mesh 形變權重。這些是軟體流程驗證。**沒有實體 B0645／Mac／本人影像**，無法認定真人外觀、量測精度或麥克風／相機同步通過。首版只有正面 2.5D 曲面與程序形變，不是完整頭部、口腔或解剖級表情 rig。詳見 [工具與操作](FACE_STUDIO.md)、看板 AF-01–08 及 `evidence/face-smoke.json`。
+
 ## 主機與 Repo
 
 - 已完整閱讀 README、AGENTS、WORK_HANDOFF 與全部五份需求／架構／研究／路線／契約文件，以及 Issues #1–#3。
@@ -24,8 +30,8 @@
 
 | 指令 | 結果與範圍 | 證據 |
 |---|---|---|
-| `.venv/bin/python -m pytest --junitxml=evidence/python-tests.xml -q` | 28 項通過（單元、契約、整合；無真實模型） | python-tests.xml |
-| `cd apps/web && npm test` | RMS 數學／有界嘴部振幅測試通過 | npm-tests.tap |
+| `.venv/bin/python -m pytest --junitxml=evidence/python-tests.xml -q` | 37 項通過（含虛擬雙目校正、尺度、GLB／資料刪除；無真實本人模型） | python-tests.xml |
+| `cd apps/web && npm test` | 3 項通過：RMS、播放時間軸、GLB 資源／形變檢查 | npm-tests.tap |
 | `cd apps/web && npm run build` | TypeScript + production build 成功 | 可重跑；E2E 使用 production bundle |
 | `cd apps/web && npm run e2e` | 瀏覽器案例狀態由 raw JSON 計算；截圖含中文可讀字體 | browser-tests.json、ui-*.png |
 | `make smoke` | 10 次 TTS + 20 回合完整 mock；延遲由事件量測 | smoke.json、mock-tone.wav |
@@ -43,4 +49,4 @@
 5. 未實作 macOS 透明置頂視窗、精確 viseme、真實表情模型、監護人認證、加密備份／復原、接班權限。這是 localhost MVP，尚未達家庭長期使用 Release Gate。
 6. `.gitignore` 與 heuristic scan 不是完整資料防洩漏；只有合成 fixture 與合成頭像截圖進公開 Repo。既有原始需求已含的歷史線索不等於本次上傳家庭資料。
 
-看板、證據與 SHA256 由 `scripts/evidence.py` 產生；需求 AC-01–10 中尚有缺口的均維持 PARTIAL／UNVERIFIED，不用 mock 綠燈替代真人驗收。
+看板、證據與 SHA256 由 `scripts/evidence.py` 產生；需求 AC-01–10、AF-01–08 中尚有缺口的均維持 PARTIAL／UNVERIFIED，不用 mock 綠燈替代真人驗收。

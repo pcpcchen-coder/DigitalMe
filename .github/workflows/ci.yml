@@ -16,6 +16,7 @@ jobs:
           cache: npm
           cache-dependency-path: apps/web/package-lock.json
       - run: make setup test smoke scan
+      - run: sudo apt-get update && sudo apt-get install -y fonts-noto-cjk
       - run: cd apps/web && npx playwright install --with-deps chromium && npm run e2e
       - run: cd apps/web && npm audit --json > ../../evidence/npm-audit.json
       - run: pipx run pip-audit -r requirements.lock --format json --output evidence/python-audit.json
