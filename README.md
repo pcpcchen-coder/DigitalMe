@@ -2,7 +2,32 @@
 
 > **願景**：保存一個人真正留下的聲音、影像、故事、知識、人生經驗與價值觀，讓家人能透過透明且可追溯的 AI 系統持續互動，而不是讓 AI 假裝真人仍然在場。
 
-**專案重啟日期：2026-10-14** · **狀態：Requirements / Reboot** · **主要執行環境：Apple Silicon Mac mini**。
+**專案重啟日期：2026-10-14** · **狀態：Local MVP / mock 已測、真實模型待 Mac 驗證** · **目標環境：Apple Silicon Mac mini**。
+
+## 立即操作
+
+已實作 React + FastAPI 工作室：文字／錄音輸入、可編輯逐字稿、多輪對話、WAV 播放、RMS 2D 頭像、授權聲音與記憶卡管理、來源揭露及清除。XTTS、Qwen3-TTS MLX、Whisper 以獨立 Python 程序接入，LLM 可選本地相容 API 或明確同意後的 OpenAI 文字 API。
+
+```bash
+# Python 3.12、Node 22.12+、Git、make
+git clone https://github.com/pcpcchen-coder/DigitalMe.git
+cd DigitalMe
+git switch codex/reboot-mvp
+make setup
+make dev
+# 開啟 http://127.0.0.1:8765
+```
+
+預設不需密鑰或私人素材；Mock 只輸出合成測試音與腳本回覆，**不是真人語音或真實 LLM**。本次實測環境是 Linux x86_64，沒有 Mac 本機存取權。請見 [實際狀態](docs/STATUS.md)、[Mac 操作與新模型接入](docs/RUN_MAC.md)、[實作架構](docs/IMPLEMENTATION.md)、[可視化驗收看板](evidence/index.html)、[證據 manifest](evidence/manifest.json)。
+
+```bash
+make test smoke scan
+cd apps/web && npx playwright install chromium && npm run e2e && cd ../..
+make evidence
+# 啟動後 /acceptance.html 可檢視由原始測試事件產生的看板
+```
+
+Issues #1–#3 均保留真機驗收缺口；不宣告完整數位分身已完成。私人資料預設只在 localhost 使用，不可把此開發服務公開部署。
 
 ## 一句話目標
 
@@ -64,4 +89,4 @@ Mic / text input
 
 ## 當前下一步
 
-在 macOS Work session / coding agent 中依照 [docs/WORK_HANDOFF.md](docs/WORK_HANDOFF.md) 盤點舊環境，建置可啟動的 MVP，執行及記錄真機驗收。README 與需求文件是**規格基準**，不代表功能已實作。
+在 macOS 執行只讀 `scripts/inventory_mac.py`；優先比較獨立 MLX 新後端與既有 XTTS，再接真實 Whisper／LLM 完成 20 回合、本人音質、延遲與音視偏差驗收。接續常駐推論／串流、macOS 浮動視窗、監護人授權與加密備份。原始需求文件仍為規格基準，實作與證據以 `docs/STATUS.md` 為準。

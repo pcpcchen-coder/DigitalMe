@@ -1,0 +1,29 @@
+{
+  "scope": "observed development failures and resolutions; no private assets",
+  "cases": [
+    {
+      "case": "frontend-tsx-build",
+      "before": "TS1005 missing JSX expression delimiter",
+      "action": "fixed expression, formatted TypeScript",
+      "after": "production build passed"
+    },
+    {
+      "case": "dependency-audit",
+      "before": "npm: Vite high-severity advisories; Python: pytest advisory",
+      "action": "Vite 7.3.7 and pytest 9.1.1 pinned, audits rerun",
+      "after": "see npm-audit.json and python-audit.json"
+    },
+    {
+      "case": "microphone-host-capability",
+      "before": "cloud Chromium getUserMedia NotSupportedError",
+      "action": "added codec negotiation and explicit unsupported UX; browser recording test injects a synthetic MediaStream",
+      "after": "synthetic recording passed; physical microphone remains UNVERIFIED"
+    },
+    {
+      "case": "screenshot-fonts",
+      "before": "test host lacked Chinese glyphs",
+      "action": "installed Noto Sans CJK TC on test host only; no external font requests added to app",
+      "after": "screenshots recaptured for visual review"
+    }
+  ]
+}

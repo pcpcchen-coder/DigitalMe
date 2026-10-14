@@ -1,0 +1,148 @@
+{
+  "generated_at": "2026-10-14T01:09:06.291123+00:00",
+  "source_commit": "ebf69681fea995b353505620cf1f4a8c9ba8e641",
+  "environment": {
+    "os": "Linux",
+    "arch": "x86_64",
+    "python": "3.12.14"
+  },
+  "stats": {
+    "python_passed": 28,
+    "python_total": 28,
+    "browser_passed": 9,
+    "browser_total": 9,
+    "tts_passed": 10,
+    "tts_total": 10,
+    "dialogue_passed": 20,
+    "dialogue_total": 20,
+    "mock_p50_ms": 25.557000000000002,
+    "privacy_scan": true,
+    "npm_vulnerabilities": 0,
+    "python_vulnerabilities": 0
+  },
+  "matrix": [
+    [
+      "AC-01",
+      "PARTIAL",
+      "Mock PCM WAV verified; real Chinese cloned speech unverified",
+      "make smoke; make test",
+      "smoke.json"
+    ],
+    [
+      "AC-02",
+      "UNVERIFIED",
+      "3 voice references / family blind quality rating require Mac and consent",
+      "Mac voice comparison",
+      null
+    ],
+    [
+      "AC-03",
+      "PARTIAL",
+      "20 mock turns; real owner-voice natural dialogue unverified",
+      "make smoke; npm run e2e",
+      "smoke.json"
+    ],
+    [
+      "AC-04",
+      "PARTIAL",
+      "Browser RMS movement and playable audio; no measured A/V offset",
+      "npm run e2e",
+      "browser-tests.json"
+    ],
+    [
+      "AC-05",
+      "PARTIAL",
+      "Injected failure, timeout, retry; real model process-stop recovery unverified",
+      "make test; npm run e2e",
+      "python-tests.xml"
+    ],
+    [
+      "AC-06",
+      "PARTIAL",
+      "Permission rejection simulated in browser; physical Mac permission unverified",
+      "npm run e2e",
+      "browser-tests.json"
+    ],
+    [
+      "AC-07",
+      "PARTIAL",
+      "Mock no-source disclosure and retrieval; live LLM hallucination red-team unverified",
+      "make test",
+      "python-tests.xml"
+    ],
+    [
+      "AC-08",
+      "PARTIAL",
+      "Local voice/memory/session deletion; encrypted backups/secure erasure not implemented",
+      "make test; npm run e2e",
+      "python-tests.xml"
+    ],
+    [
+      "AC-09",
+      "PASS",
+      "Index pattern scan; only synthetic evidence allowed; heuristic scope",
+      "make scan",
+      "privacy-scan.json"
+    ],
+    [
+      "AC-10",
+      "PARTIAL",
+      "Lockfiles, build and smoke tested; Mac clean clone not tested",
+      "make setup test smoke",
+      "python-tests.xml"
+    ]
+  ],
+  "sha256": {
+    "smoke.json": "372a464541db52a5ef14ea66d0d65a51e9711fa5df72bed75b433c64961dcf52",
+    "python-tests.xml": "e78a6c6bac6d8c712d979c2f1a03b44dc7cb84b68b1c31010db9866fbebe8b10",
+    "browser-tests.json": "1c8bd8b8000fbb02f6c73ecefdb785912d6e602aa76b8258e56d63d52dc33505",
+    "privacy-scan.json": "c51a38442b0ac3587eeaf08f5524ad25154e83985c9467ed472a6e17bdd6dd4d",
+    "npm-audit.json": "d6ed6ac5d60dcb110adaaa2b7a9855042863acbf6059cf56d01e0b1a6fa259d5",
+    "python-audit.json": "484b48be1b1fdc64e251e03329fe77a7f1f89e08f7a2b5597b19d727e370c1b1",
+    "regressions.json": "e15e91d8e8cbae992253b36dcb7c6184d3e8e2ec89b1b10328d2e7b608369fc2",
+    "ui-idle.png": "48018596d5fdcdaf8fb8441b76fc15a7e2a464402f39b913570875299cdac541",
+    "ui-speaking.png": "71f19ce0e8672c0e34c976fb519d839ade7d7a2141d45b3810d393730f9ff2ac",
+    "ui-mobile.png": "e5983dfec32c054810ce6a896d14614d7ca4cebc324c4047fad862870f328698",
+    "mock-tone.wav": "03ba780f9e4b44d9efe08b1391c700b3ba892efbfa177c163ae7b190a284005e",
+    "npm-tests.tap": "2c1634998e876e6fe2db35d300d7898e83fc418176bdf88ef3416e3fcb86eca0"
+  },
+  "scope": "synthetic mock only; not real speech, Mac, first-audible latency or audio/video synchronization",
+  "browser_cases": [
+    {
+      "title": "Chinese text, playable audio and RMS avatar, interrupt, clear",
+      "ok": true
+    },
+    {
+      "title": "20 UI turns complete, latency visible, ten TTS requests",
+      "ok": true
+    },
+    {
+      "title": "backend errors remain visible and user can recover",
+      "ok": true
+    },
+    {
+      "title": "synthetic MediaStream capture produces editable transcript, no automatic generation",
+      "ok": true
+    },
+    {
+      "title": "denied microphone has text fallback (simulated permission rejection)",
+      "ok": true
+    },
+    {
+      "title": "cloud opt-in and owner-reviewed memory CRUD with original source",
+      "ok": true
+    },
+    {
+      "title": "portrait remains in browser, mobile layout fits",
+      "ok": true
+    },
+    {
+      "title": "unsupported microphone is explicit and leaves text usable",
+      "ok": true
+    },
+    {
+      "title": "synthetic reference upload, original recording disclosure, preview and deletion",
+      "ok": true
+    }
+  ]
+}
