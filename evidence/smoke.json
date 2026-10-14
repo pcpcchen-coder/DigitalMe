@@ -1,85 +1,86 @@
 {
   "schema_version": "1.0",
-  "timestamp": "2026-10-14T01:08:23.289248+00:00",
-  "source_commit": "ebf69681fea995b353505620cf1f4a8c9ba8e641",
-  "working_tree_diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "timestamp": "2026-10-14T01:36:17.025990+00:00",
+  "source_commit": "7d136e707beae9caa05c45d2f76658e1ef199d4b",
+  "working_tree_diff_sha256": "a5d39433cebfbd84a927f5658626033969ea4ad83006f9bce4ae0eb0075c446e",
   "environment": {
     "os": "Linux",
     "arch": "x86_64",
     "python": "3.12.14"
   },
   "scope": "synthetic mock only; not real speech, Mac, first-audible latency or audio/video synchronization",
-  "p50_pipeline_ms": 25.557000000000002,
+  "p50_pipeline_ms": 22.0105,
   "events": [
     {
       "case": "tts_10",
       "index": 1,
       "ok": true,
-      "elapsed_ms": 16.482
+      "elapsed_ms": 11.406
     },
     {
       "case": "tts_10",
       "index": 2,
       "ok": true,
-      "elapsed_ms": 13.861
+      "elapsed_ms": 11.625
     },
     {
       "case": "tts_10",
       "index": 3,
       "ok": true,
-      "elapsed_ms": 11.465
+      "elapsed_ms": 8.461
     },
     {
       "case": "tts_10",
       "index": 4,
       "ok": true,
-      "elapsed_ms": 12.71
+      "elapsed_ms": 11.899
     },
     {
       "case": "tts_10",
       "index": 5,
       "ok": true,
-      "elapsed_ms": 10.571
+      "elapsed_ms": 8.542
     },
     {
       "case": "tts_10",
       "index": 6,
       "ok": true,
-      "elapsed_ms": 11.18
+      "elapsed_ms": 10.032
     },
     {
       "case": "tts_10",
       "index": 7,
       "ok": true,
-      "elapsed_ms": 10.583
+      "elapsed_ms": 10.345
     },
     {
       "case": "tts_10",
       "index": 8,
       "ok": true,
-      "elapsed_ms": 13.129
+      "elapsed_ms": 8.962
     },
     {
       "case": "tts_10",
       "index": 9,
       "ok": true,
-      "elapsed_ms": 12.335
+      "elapsed_ms": 8.506
     },
     {
       "case": "tts_10",
       "index": 10,
       "ok": true,
-      "elapsed_ms": 11.201
+      "elapsed_ms": 11.528
     },
     {
       "case": "dialogue_20",
       "index": 1,
       "ok": true,
-      "turn_id": "0c667838-50d1-45e3-8df0-cef58a9a6a89",
+      "turn_id": "fcb4144f-e223-469f-9ad7-9f6bbfdb9623",
       "timings": {
-        "llm_ms": 0.007,
-        "tts_ms": 40.497,
-        "total_ms": 40.504
+        "llm_ms": 0.01,
+        "tts_ms": 24.212,
+        "lipsync_ms": 1.834,
+        "total_ms": 26.055
       },
       "engine": "mock",
       "disclosure": "ai_generated"
@@ -88,11 +89,12 @@
       "case": "dialogue_20",
       "index": 2,
       "ok": true,
-      "turn_id": "acad190d-c9a2-473e-882c-5e73dfa8838f",
+      "turn_id": "e574320d-e38a-482f-a9f3-104d7319b751",
       "timings": {
-        "llm_ms": 0.007,
-        "tts_ms": 47.93,
-        "total_ms": 47.937
+        "llm_ms": 0.045,
+        "tts_ms": 21.657,
+        "lipsync_ms": 2.05,
+        "total_ms": 23.752
       },
       "engine": "mock",
       "disclosure": "ai_generated"
@@ -101,11 +103,12 @@
       "case": "dialogue_20",
       "index": 3,
       "ok": true,
-      "turn_id": "45474805-761f-4081-a2c0-ae4472134b10",
+      "turn_id": "813ddc80-8aca-4242-b6bc-17a70cdde96b",
       "timings": {
-        "llm_ms": 0.007,
-        "tts_ms": 24.031,
-        "total_ms": 24.038
+        "llm_ms": 0.005,
+        "tts_ms": 24.109,
+        "lipsync_ms": 0.622,
+        "total_ms": 24.736
       },
       "engine": "mock",
       "disclosure": "ai_generated"
@@ -114,11 +117,12 @@
       "case": "dialogue_20",
       "index": 4,
       "ok": true,
-      "turn_id": "4bedb1bf-bec8-496f-9651-2b353257d5ee",
+      "turn_id": "5403c003-e3b7-4302-a152-ac8972aa012f",
       "timings": {
-        "llm_ms": 0.007,
-        "tts_ms": 25.56,
-        "total_ms": 25.567
+        "llm_ms": 0.005,
+        "tts_ms": 19.281,
+        "lipsync_ms": 0.85,
+        "total_ms": 20.136
       },
       "engine": "mock",
       "disclosure": "ai_generated"
@@ -127,11 +131,12 @@
       "case": "dialogue_20",
       "index": 5,
       "ok": true,
-      "turn_id": "19f56c4e-0e45-49aa-a284-ab8818d6fa03",
+      "turn_id": "419b46a1-3bc3-42e6-a014-8dc05b6ae798",
       "timings": {
-        "llm_ms": 0.009,
-        "tts_ms": 25.833,
-        "total_ms": 25.842
+        "llm_ms": 0.005,
+        "tts_ms": 20.965,
+        "lipsync_ms": 0.954,
+        "total_ms": 21.925
       },
       "engine": "mock",
       "disclosure": "ai_generated"
@@ -140,11 +145,12 @@
       "case": "dialogue_20",
       "index": 6,
       "ok": true,
-      "turn_id": "2e9178c8-7f3e-4e02-bbaa-cef0b8df2381",
+      "turn_id": "1a3f092e-84cc-4f71-9d70-57e44feb8cad",
       "timings": {
-        "llm_ms": 0.596,
-        "tts_ms": 27.76,
-        "total_ms": 28.356
+        "llm_ms": 0.006,
+        "tts_ms": 22.389,
+        "lipsync_ms": 1.085,
+        "total_ms": 23.48
       },
       "engine": "mock",
       "disclosure": "ai_generated"
@@ -153,11 +159,12 @@
       "case": "dialogue_20",
       "index": 7,
       "ok": true,
-      "turn_id": "3aa70df5-12b9-436f-990b-aa8649938916",
+      "turn_id": "b5501be6-6ce4-4370-a0f9-d0730b783a0c",
       "timings": {
-        "llm_ms": 0.006,
-        "tts_ms": 23.327,
-        "total_ms": 23.333
+        "llm_ms": 0.007,
+        "tts_ms": 20.923,
+        "lipsync_ms": 0.817,
+        "total_ms": 21.746
       },
       "engine": "mock",
       "disclosure": "ai_generated"
@@ -166,11 +173,12 @@
       "case": "dialogue_20",
       "index": 8,
       "ok": true,
-      "turn_id": "60d8bd79-412e-481f-8751-3490fce05f3b",
+      "turn_id": "05459c37-642f-45fb-b08b-1cd0194d682a",
       "timings": {
         "llm_ms": 0.007,
-        "tts_ms": 25.975,
-        "total_ms": 25.982
+        "tts_ms": 21.353,
+        "lipsync_ms": 1.276,
+        "total_ms": 22.635
       },
       "engine": "mock",
       "disclosure": "ai_generated"
@@ -179,11 +187,12 @@
       "case": "dialogue_20",
       "index": 9,
       "ok": true,
-      "turn_id": "1b47fcb6-6e89-43b0-85d8-61a4575a667c",
+      "turn_id": "67163702-8e97-403d-a636-6d6d4e2f91d4",
       "timings": {
-        "llm_ms": 0.007,
-        "tts_ms": 22.418,
-        "total_ms": 22.425
+        "llm_ms": 0.006,
+        "tts_ms": 20.592,
+        "lipsync_ms": 0.837,
+        "total_ms": 21.436
       },
       "engine": "mock",
       "disclosure": "ai_generated"
@@ -192,11 +201,12 @@
       "case": "dialogue_20",
       "index": 10,
       "ok": true,
-      "turn_id": "859583f3-6c08-4788-9753-749682116faf",
+      "turn_id": "14e51021-a408-4210-affa-07a3a5587c9e",
       "timings": {
-        "llm_ms": 0.008,
-        "tts_ms": 23.529,
-        "total_ms": 23.537
+        "llm_ms": 0.006,
+        "tts_ms": 22.572,
+        "lipsync_ms": 0.746,
+        "total_ms": 23.324
       },
       "engine": "mock",
       "disclosure": "ai_generated"
@@ -205,11 +215,12 @@
       "case": "dialogue_20",
       "index": 11,
       "ok": true,
-      "turn_id": "b42af315-fab3-4f13-954b-c3ca43cb03dc",
+      "turn_id": "783c2124-958c-4ecc-8fb4-985405dec27c",
       "timings": {
-        "llm_ms": 0.008,
-        "tts_ms": 29.11,
-        "total_ms": 29.118
+        "llm_ms": 0.006,
+        "tts_ms": 20.229,
+        "lipsync_ms": 0.622,
+        "total_ms": 20.857
       },
       "engine": "mock",
       "disclosure": "ai_generated"
@@ -218,11 +229,12 @@
       "case": "dialogue_20",
       "index": 12,
       "ok": true,
-      "turn_id": "450a491d-5c67-4337-a483-e854dbc31bda",
+      "turn_id": "64a0e321-c990-44cd-b4f5-dc5ae2bf176c",
       "timings": {
-        "llm_ms": 0.008,
-        "tts_ms": 25.921,
-        "total_ms": 25.929
+        "llm_ms": 0.007,
+        "tts_ms": 25.088,
+        "lipsync_ms": 0.661,
+        "total_ms": 25.756
       },
       "engine": "mock",
       "disclosure": "ai_generated"
@@ -231,11 +243,12 @@
       "case": "dialogue_20",
       "index": 13,
       "ok": true,
-      "turn_id": "32562f55-2042-411a-bee2-1da8ae907375",
+      "turn_id": "aad6c7fd-3240-4ab2-be65-856413189350",
       "timings": {
         "llm_ms": 0.008,
-        "tts_ms": 24.314,
-        "total_ms": 24.322
+        "tts_ms": 21.505,
+        "lipsync_ms": 0.584,
+        "total_ms": 22.096
       },
       "engine": "mock",
       "disclosure": "ai_generated"
@@ -244,11 +257,12 @@
       "case": "dialogue_20",
       "index": 14,
       "ok": true,
-      "turn_id": "3334dcd9-e74a-42cb-9ba0-0c73dfc1dcd8",
+      "turn_id": "17eddeef-7675-465d-ae3a-3ca1de04aa89",
       "timings": {
-        "llm_ms": 0.008,
-        "tts_ms": 24.542,
-        "total_ms": 24.55
+        "llm_ms": 0.007,
+        "tts_ms": 22.08,
+        "lipsync_ms": 0.913,
+        "total_ms": 23.0
       },
       "engine": "mock",
       "disclosure": "ai_generated"
@@ -257,11 +271,12 @@
       "case": "dialogue_20",
       "index": 15,
       "ok": true,
-      "turn_id": "118805ea-54fb-4849-90da-3bd592072812",
+      "turn_id": "5a6c446e-b95f-48c0-b46a-6e450971523e",
       "timings": {
-        "llm_ms": 0.009,
-        "tts_ms": 22.904,
-        "total_ms": 22.912
+        "llm_ms": 0.006,
+        "tts_ms": 20.28,
+        "lipsync_ms": 0.586,
+        "total_ms": 20.872
       },
       "engine": "mock",
       "disclosure": "ai_generated"
@@ -270,11 +285,12 @@
       "case": "dialogue_20",
       "index": 16,
       "ok": true,
-      "turn_id": "154d9f02-101e-4e51-88ac-09f20192adf8",
+      "turn_id": "da4b0547-943c-4b3e-ae12-e46401163cb3",
       "timings": {
         "llm_ms": 0.009,
-        "tts_ms": 25.538,
-        "total_ms": 25.547
+        "tts_ms": 21.036,
+        "lipsync_ms": 0.879,
+        "total_ms": 21.924
       },
       "engine": "mock",
       "disclosure": "ai_generated"
@@ -283,11 +299,12 @@
       "case": "dialogue_20",
       "index": 17,
       "ok": true,
-      "turn_id": "7f13b61d-8e20-403f-90d6-49da6fbf48fd",
+      "turn_id": "0acd14e3-e09e-4e2b-8a0b-073b6f4491a4",
       "timings": {
-        "llm_ms": 0.014,
-        "tts_ms": 23.303,
-        "total_ms": 23.317
+        "llm_ms": 0.007,
+        "tts_ms": 20.228,
+        "lipsync_ms": 0.568,
+        "total_ms": 20.803
       },
       "engine": "mock",
       "disclosure": "ai_generated"
@@ -296,11 +313,12 @@
       "case": "dialogue_20",
       "index": 18,
       "ok": true,
-      "turn_id": "71be88fb-1211-49d9-9610-4e18cb2440e1",
+      "turn_id": "a8b3f807-abb6-442d-8a76-64e065534d45",
       "timings": {
-        "llm_ms": 0.009,
-        "tts_ms": 25.613,
-        "total_ms": 25.622
+        "llm_ms": 0.007,
+        "tts_ms": 22.613,
+        "lipsync_ms": 1.198,
+        "total_ms": 23.818
       },
       "engine": "mock",
       "disclosure": "ai_generated"
@@ -309,11 +327,12 @@
       "case": "dialogue_20",
       "index": 19,
       "ok": true,
-      "turn_id": "e83132e2-9d14-47a2-8f04-d55a9fb19e01",
+      "turn_id": "59d35000-812c-4ea7-abe0-5d6015242379",
       "timings": {
-        "llm_ms": 0.009,
-        "tts_ms": 26.371,
-        "total_ms": 26.38
+        "llm_ms": 0.007,
+        "tts_ms": 19.666,
+        "lipsync_ms": 0.797,
+        "total_ms": 20.47
       },
       "engine": "mock",
       "disclosure": "ai_generated"
@@ -322,11 +341,12 @@
       "case": "dialogue_20",
       "index": 20,
       "ok": true,
-      "turn_id": "f8b5782b-7211-4a79-9156-d2e37980c0b9",
+      "turn_id": "7aab6745-dc79-4777-ab48-1215830f9b00",
       "timings": {
-        "llm_ms": 0.009,
-        "tts_ms": 21.425,
-        "total_ms": 21.434
+        "llm_ms": 0.007,
+        "tts_ms": 20.555,
+        "lipsync_ms": 0.738,
+        "total_ms": 21.3
       },
       "engine": "mock",
       "disclosure": "ai_generated"
